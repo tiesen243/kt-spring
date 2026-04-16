@@ -1,15 +1,14 @@
 package com.tiesen.api.controllers
 
-import com.tiesen.api.dtos.PostDto
+import com.tiesen.api.dtos.PostDTO
 import com.tiesen.api.services.PostService
 import com.tiesen.api.utils.Response
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @RestController
-class PostController {
-  private val postService = PostService()
-
+class PostController(private val postService: PostService) {
   @GetMapping("/api/v1/posts") fun all() = Response.ok("All posts retrieved", postService.all())
 
   @GetMapping("/api/v1/posts/{id}")
@@ -18,7 +17,7 @@ class PostController {
           ?: Response.error(HttpStatus.NOT_FOUND, "Post with id $id not found")
 
   @PostMapping("/api/v1/posts")
-  fun create(@RequestBody post: PostDto) =
+  fun create(@RequestBody @Valid post: PostDTO) =
       try {
         Response.created("Post created successfully", postService.create(post))
       } catch (e: Exception) {
@@ -26,7 +25,7 @@ class PostController {
       }
 
   @PutMapping("/api/v1/posts/{id}")
-  fun update(@PathVariable id: Int, @RequestBody post: PostDto) =
+  fun update(@PathVariable id: Int, @RequestBody @Valid post: PostDTO) =
       try {
         postService.update(id, post)?.let { Response.ok("Post with id $id updated", it) }
             ?: Response.error(HttpStatus.NOT_FOUND, "Post with id $id not found")

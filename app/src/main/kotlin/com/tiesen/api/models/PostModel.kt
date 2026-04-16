@@ -1,3 +1,11 @@
 package com.tiesen.api.models
 
-data class PostModel(val id: Int, val title: String, val content: String)
+import jakarta.persistence.*
+
+@Entity
+@Table(name = "posts")
+data class PostModel(
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Int = 0,
+    val title: String = "",
+    val content: String = "",
+)

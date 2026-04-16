@@ -1,4 +1,5 @@
 {
+  "version": "0.0.1",
   "scripts": {
     "build": "tailwindcss -i ./app/src/main/resources/static/assets/input.css -o ./app/src/main/resources/static/assets/app.css --minify",
     "watch": "tailwindcss -i ./app/src/main/resources/static/assets/input.css -o ./app/src/main/resources/static/assets/app.css --watch"
@@ -8,4 +9,3 @@
     "tailwindcss": "^4.2.2"
   }
 }
-

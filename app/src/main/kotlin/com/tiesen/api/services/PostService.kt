@@ -1,33 +1,35 @@
 package com.tiesen.api.services
 
-import com.tiesen.api.dtos.PostDto
+import com.tiesen.api.dtos.PostDTO
 import com.tiesen.api.models.PostModel
+import com.tiesen.api.repositories.PostRepository
+import org.springframework.data.repository.findByIdOrNull
+import org.springframework.stereotype.Service
 
-class PostService {
-  private val posts = mutableListOf<PostModel>()
-
+@Service
+class PostService(private val postRepository: PostRepository) {
   fun all(): List<PostModel> {
-    return posts
+    return postRepository.findAll().toList()
   }
 
   fun one(id: Int): PostModel? {
-    return posts.find { it.id == id }
+    return postRepository.findByIdOrNull(id)
   }
 
-  fun create(post: PostDto): PostModel {
-    val newPost = PostModel(posts.size + 1, post.title, post.content)
-    posts.add(newPost)
-    return newPost
+  fun create(post: PostDTO): PostModel {
+    val newPost = PostModel(title = post.title, content = post.content)
+    return postRepository.save(newPost)
   }
 
-  fun update(id: Int, post: PostDto): PostModel? {
-    val existingPost = posts.find { it.id == id } ?: return null
+  fun update(id: Int, post: PostDTO): PostModel? {
+    val existingPost = postRepository.findByIdOrNull(id) ?: return null
     val updatedPost = existingPost.copy(title = post.title, content = post.content)
-    posts[posts.indexOf(existingPost)] = updatedPost
-    return updatedPost
+    return postRepository.save(updatedPost)
   }
 
   fun delete(id: Int): Boolean {
-    return posts.removeIf { it.id == id }
+    if (!postRepository.existsById(id)) return false
+    postRepository.deleteById(id)
+    return true
   }
 }

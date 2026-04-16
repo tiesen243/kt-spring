@@ -30,6 +30,14 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
   implementation("org.jetbrains.kotlin:kotlin-reflect")
+
+  // PostgreSQL and JPA dependencies
+  implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+  runtimeOnly("org.postgresql:postgresql")
+
+  // Validation
+  implementation("org.springframework.boot:spring-boot-starter-validation")
+
   developmentOnly("org.springframework.boot:spring-boot-devtools")
 
   // This dependency is used by the application.
